@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class GestorAdministrativoDeLaFabricaApplication {
+public class AdministradorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GestorAdministrativoDeLaFabricaApplication.class, args);
+		SpringApplication.run(AdministradorApplication.class, args);
 	}
 
 }
