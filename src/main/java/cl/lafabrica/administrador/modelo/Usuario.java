@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class Usuario {
 
-    public Integer runUser;
+    public String runUser;
     public String digitoVUser;
     public String primerNombreUser;
     public String segundoNombreUser;
