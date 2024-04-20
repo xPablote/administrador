@@ -11,5 +11,5 @@ import java.util.concurrent.ExecutionException;
 public interface UsuarioService {
 
     ResponseFirestore saveUsuario(Usuario usuario) throws ExecutionException, InterruptedException, ParseException;
-
+    Usuario getUsuario(String id) throws ExecutionException, InterruptedException, ParseException;
 }

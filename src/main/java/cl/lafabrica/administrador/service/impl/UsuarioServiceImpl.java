@@ -5,6 +5,7 @@ import cl.lafabrica.administrador.pojo.response.ResponseFirestore;
 import cl.lafabrica.administrador.service.UsuarioService;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
@@ -36,6 +37,20 @@ public class UsuarioServiceImpl  implements UsuarioService {
         String fechaCreacion = formatter.format(fecha);
         respuesta.setFechaCreacion(fechaCreacion);
         return respuesta;
+    }
+
+    public Usuario getUsuario(String runUser) throws ExecutionException, InterruptedException{
+        firestore = FirestoreClient.getFirestore();
+
+        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(runUser);
+        ApiFuture<DocumentSnapshot> future = documentReference.get();
+        DocumentSnapshot documentSnapshot = future.get();
+        Usuario usuario = null;
+        if (documentSnapshot.exists()) {
+            return usuario = documentSnapshot.toObject(Usuario.class);
+        }
+        return usuario;
+
     }
 
 

@@ -22,21 +22,10 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-
-    @Operation(summary = "Obtener todos los usuarios")
+    @Operation(summary = "Crea un usuario")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Se obtuvieron los usuarios correctamente"),
-            @ApiResponse(responseCode = "404", description = "No se encontraron usuarios")
-    })
-    @GetMapping("/listarUsuarios")
-    public List<UsuarioDto> getAllUsuarios() throws Exception {
-        return null;//usuarioService.getAll();
-    }
-
-    @Operation(summary = "crea un usuario")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Obtiene un usuarios correctamente"),
-            @ApiResponse(responseCode = "404", description = "No se encontro un usuario")
+            @ApiResponse(responseCode = "200", description = "Crea un usuarios correctamente"),
+            @ApiResponse(responseCode = "404", description = "Creacion de usuario sin exito")
     })
     @PostMapping("/creaUsuario")
     public ResponseEntity<ResponseFirestore> save(
@@ -44,4 +33,32 @@ public class UsuarioController {
         ResponseFirestore resp = usuarioService.saveUsuario(usuario);
         return new ResponseEntity<ResponseFirestore>(resp, HttpStatus.OK);
     }
+    @Operation(summary = "Obtiene un usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Obtiene un usuarios correctamente"),
+            @ApiResponse(responseCode = "404", description = "usuario inexistente")
+    })
+
+    @GetMapping("/getUsuario/{runUser}")
+    public ResponseEntity<Usuario> getUsuario(
+            @PathVariable String runUser) throws Exception {
+        Usuario resp = usuarioService.getUsuario(runUser);
+        return new ResponseEntity<Usuario>(resp, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Obtiene una lista de usuarios")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Obtiene lista usuarios correctamente"),
+            @ApiResponse(responseCode = "404", description = "usuarios inexistentes")
+    })
+
+    @GetMapping("/getUsuario/{runUser}")
+    public ResponseEntity<Usuario> getUsuarios(
+            @PathVariable String runUser) throws Exception {
+        Usuario resp = usuarioService.getUsuario(runUser);
+        return new ResponseEntity<Usuario>(resp, HttpStatus.OK);
+    }
+
+
+
 }
