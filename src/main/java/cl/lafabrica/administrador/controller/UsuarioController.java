@@ -1,6 +1,5 @@
 package cl.lafabrica.administrador.controller;
 
-import cl.lafabrica.administrador.dto.UsuarioDto;
 import cl.lafabrica.administrador.modelo.Usuario;
 import cl.lafabrica.administrador.pojo.response.ResponseFirestore;
 import cl.lafabrica.administrador.service.UsuarioService;
@@ -39,11 +38,11 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "usuario inexistente")
     })
 
-    @GetMapping("/getUsuario/{runUser}")
+    @GetMapping("/getUsuario/{rut}")
     public ResponseEntity<Usuario> getUsuario(
-            @PathVariable String runUser) throws Exception {
-        Usuario resp = usuarioService.getUsuario(runUser);
-        return new ResponseEntity<Usuario>(resp, HttpStatus.OK);
+            @PathVariable String rut) throws Exception {
+        Usuario resp = usuarioService.getUsuario(rut);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
     @Operation(summary = "Obtiene una lista de usuarios")
@@ -52,11 +51,10 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "usuarios inexistentes")
     })
 
-    @GetMapping("/getUsuario/{runUser}")
-    public ResponseEntity<Usuario> getUsuarios(
-            @PathVariable String runUser) throws Exception {
-        Usuario resp = usuarioService.getUsuario(runUser);
-        return new ResponseEntity<Usuario>(resp, HttpStatus.OK);
+    @GetMapping("/getUsuarios")
+    public ResponseEntity<List<Usuario>> getUsuarios() throws Exception {
+        List<Usuario> resp = usuarioService.getUsuarios();
+        return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
 
