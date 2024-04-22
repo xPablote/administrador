@@ -26,12 +26,13 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Crea un usuarios correctamente"),
             @ApiResponse(responseCode = "404", description = "Creacion de usuario sin exito")
     })
-    @PostMapping("/creaUsuario")
-    public ResponseEntity<ResponseFirestore> save(
+    @PostMapping("/createUsuario")
+    public ResponseEntity<ResponseFirestore> createUsuario(
             @RequestBody Usuario usuario) throws Exception {
-        ResponseFirestore resp = usuarioService.saveUsuario(usuario);
+        ResponseFirestore resp = usuarioService.createUsuario(usuario);
         return new ResponseEntity<ResponseFirestore>(resp, HttpStatus.OK);
     }
+
     @Operation(summary = "Obtiene un usuario")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Obtiene un usuarios correctamente"),
@@ -55,6 +56,17 @@ public class UsuarioController {
     public ResponseEntity<List<Usuario>> getUsuarios() throws Exception {
         List<Usuario> resp = usuarioService.getUsuarios();
         return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+    @Operation(summary = "Modifica un usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Modificó un usuario correctamente"),
+            @ApiResponse(responseCode = "404", description = "Modificación de usuario sin exito")
+    })
+    @PutMapping("/updateUsuario")
+    public ResponseEntity<ResponseFirestore> updateUsuario(
+            @RequestBody Usuario usuario) throws Exception {
+        ResponseFirestore resp = usuarioService.updateUsuario(usuario);
+        return new ResponseEntity<ResponseFirestore>(resp, HttpStatus.OK);
     }
 
 
