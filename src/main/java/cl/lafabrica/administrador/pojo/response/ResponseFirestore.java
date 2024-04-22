@@ -8,5 +8,6 @@ import org.springframework.stereotype.Component;
 public class ResponseFirestore {
 
     private String rut;
-    private String fechaCreacion;
+    private String fecha;
+    private String mensaje;
 }

@@ -32,13 +32,17 @@ public class UsuarioServiceImpl  implements UsuarioService {
         firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.rut);
         String rut = documentReference.getId();
-        ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
         ResponseFirestore respuesta = new ResponseFirestore();
-        respuesta.setRut(rut);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
-        String fechaCreacion = formatter.format(fecha);
-        respuesta.setFechaCreacion(fechaCreacion);
+        if (rut.isEmpty()) {
+            ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
+            respuesta.setRut(rut);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
+            String fechaCreacion = formatter.format(fecha);
+            respuesta.setFecha(fechaCreacion);
+            respuesta.setMensaje("Usuario agregado correctamente");
+        }
+        respuesta.setMensaje("Usuario existente");
         return respuesta;
     }
 
@@ -75,14 +79,18 @@ public class UsuarioServiceImpl  implements UsuarioService {
     public ResponseFirestore updateUsuario(Usuario usuario) throws ExecutionException, InterruptedException {
         firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.rut);
-        String rut = documentReference.getId();
-        ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
         ResponseFirestore respuesta = new ResponseFirestore();
-        respuesta.setRut(rut);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
-        String fechaCreacion = formatter.format(fecha);
-        respuesta.setFechaCreacion(fechaCreacion);
+        if (documentReference.getId().isEmpty()){
+            String rut = documentReference.getId();
+            ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
+            respuesta.setRut(rut);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
+            String fechaCreacion = formatter.format(fecha);
+            respuesta.setFecha(fechaCreacion);
+            respuesta.setMensaje("Actualización exitosa");
+        }
+        respuesta.setMensaje("Usuario Inexistente");
         return  respuesta;
     }
 
