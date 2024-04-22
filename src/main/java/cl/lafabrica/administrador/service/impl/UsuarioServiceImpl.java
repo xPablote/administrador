@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -39,10 +42,10 @@ public class UsuarioServiceImpl  implements UsuarioService {
         return respuesta;
     }
 
-    public Usuario getUsuario(String runUser) throws ExecutionException, InterruptedException{
+    public Usuario getUsuario(String rut) throws ExecutionException, InterruptedException{
         firestore = FirestoreClient.getFirestore();
 
-        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(runUser);
+        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(rut);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot documentSnapshot = future.get();
         Usuario usuario = null;
@@ -50,8 +53,22 @@ public class UsuarioServiceImpl  implements UsuarioService {
             return usuario = documentSnapshot.toObject(Usuario.class);
         }
         return usuario;
-
     }
 
+    public List<Usuario> getUsuarios() throws ExecutionException, InterruptedException {
+        firestore = FirestoreClient.getFirestore();
+        Iterable<DocumentReference> documentReference = firestore.collection(FIRESTORE_COLLECTION).listDocuments();
+        Iterator<DocumentReference> iterator = documentReference.iterator();
+        List<Usuario> usuarios = new ArrayList<>();
+        Usuario usuario = null;
+        while (iterator.hasNext()) {
+            DocumentReference documentReference1 = iterator.next();
+            ApiFuture<DocumentSnapshot> future = documentReference1.get();
+            DocumentSnapshot snapshot = future.get();
+            usuario = snapshot.toObject(Usuario.class);
+            usuarios.add(usuario);
+        }
+        return usuarios;
+    }
 
 }
