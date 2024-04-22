@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 @Data
 public class ResponseFirestore {
 
-    private String id;
+    private String rut;
     private String fechaCreacion;
 }

@@ -28,13 +28,13 @@ public class UsuarioServiceImpl  implements UsuarioService {
     private Firestore firestore;
 
     @Override
-    public ResponseFirestore saveUsuario(Usuario usuario) throws ExecutionException, InterruptedException, ParseException {
+    public ResponseFirestore createUsuario(Usuario usuario) throws ExecutionException, InterruptedException, ParseException {
         firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document();
-        String id = documentReference.getId();
+        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.rut);
+        String rut = documentReference.getId();
         ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
         ResponseFirestore respuesta = new ResponseFirestore();
-        respuesta.setId(id);
+        respuesta.setRut(rut);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
         String fechaCreacion = formatter.format(fecha);
@@ -69,6 +69,21 @@ public class UsuarioServiceImpl  implements UsuarioService {
             usuarios.add(usuario);
         }
         return usuarios;
+    }
+
+    @Override
+    public ResponseFirestore updateUsuario(Usuario usuario) throws ExecutionException, InterruptedException {
+        firestore = FirestoreClient.getFirestore();
+        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.rut);
+        String rut = documentReference.getId();
+        ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
+        ResponseFirestore respuesta = new ResponseFirestore();
+        respuesta.setRut(rut);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
+        String fechaCreacion = formatter.format(fecha);
+        respuesta.setFechaCreacion(fechaCreacion);
+        return  respuesta;
     }
 
 }
