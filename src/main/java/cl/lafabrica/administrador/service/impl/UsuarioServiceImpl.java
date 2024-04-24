@@ -30,19 +30,18 @@ public class UsuarioServiceImpl  implements UsuarioService {
     @Override
     public ResponseFirestore createUsuario(Usuario usuario) throws ExecutionException, InterruptedException, ParseException {
         firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.rut);
-        String rut = documentReference.getId();
+        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.run);
+        String run = documentReference.getId();
         ResponseFirestore respuesta = new ResponseFirestore();
-        if (rut.isEmpty()) {
-            ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
-            respuesta.setRut(rut);
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
-            String fechaCreacion = formatter.format(fecha);
-            respuesta.setFecha(fechaCreacion);
-            respuesta.setMensaje("Usuario agregado correctamente");
-        }
-        respuesta.setMensaje("Usuario existente");
+
+        ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
+        respuesta.setRun(run);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
+        String fechaCreacion = formatter.format(fecha);
+        respuesta.setFecha(fechaCreacion);
+        respuesta.setMensaje("Usuario agregado correctamente");
+
         return respuesta;
     }
 
@@ -78,12 +77,12 @@ public class UsuarioServiceImpl  implements UsuarioService {
     @Override
     public ResponseFirestore updateUsuario(Usuario usuario) throws ExecutionException, InterruptedException {
         firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.rut);
+        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.run);
         ResponseFirestore respuesta = new ResponseFirestore();
         if (documentReference.getId().isEmpty()){
             String rut = documentReference.getId();
             ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
-            respuesta.setRut(rut);
+            respuesta.setRun(rut);
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
             String fechaCreacion = formatter.format(fecha);

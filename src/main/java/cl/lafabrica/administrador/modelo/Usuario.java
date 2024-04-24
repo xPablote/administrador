@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class Usuario {
 
-    public String rut;
+    public String run;
     public String dv;
     public String primerNombre;
     public String segundoNombre;
