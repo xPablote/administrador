@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -30,19 +32,23 @@ public class UsuarioServiceImpl  implements UsuarioService {
     @Override
     public ResponseFirestore createUsuario(Usuario usuario) throws ExecutionException, InterruptedException, ParseException {
         firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.rut);
-        String rut = documentReference.getId();
+        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.run);
         ResponseFirestore respuesta = new ResponseFirestore();
-        if (rut.isEmpty()) {
-            ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
-            respuesta.setRut(rut);
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
-            String fechaCreacion = formatter.format(fecha);
-            respuesta.setFecha(fechaCreacion);
-            respuesta.setMensaje("Usuario agregado correctamente");
+        if (documentReference.get().get().exists()) {
+            respuesta.setRun(usuario.run);
+            respuesta.setFecha(fechaActual());
+            respuesta.setMensaje("Usuario RUN: " + usuario.run + " ya existe");
+            return respuesta;
         }
-        respuesta.setMensaje("Usuario existente");
+        ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
+        String run = documentReference.getId();
+        respuesta.setRun(run);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
+        String fechaCreacion = formatter.format(fecha);
+        respuesta.setFecha(fechaCreacion);
+        respuesta.setMensaje("Usuario RUN: " + usuario.run + "agregado correctamente");
+
         return respuesta;
     }
 
@@ -78,20 +84,29 @@ public class UsuarioServiceImpl  implements UsuarioService {
     @Override
     public ResponseFirestore updateUsuario(Usuario usuario) throws ExecutionException, InterruptedException {
         firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.rut);
+        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.run);
         ResponseFirestore respuesta = new ResponseFirestore();
-        if (documentReference.getId().isEmpty()){
+        DocumentSnapshot documentSnapshot = documentReference.get().get();
+        if (documentSnapshot.exists()){
             String rut = documentReference.getId();
             ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
-            respuesta.setRut(rut);
+            respuesta.setRun(rut);
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
             String fechaCreacion = formatter.format(fecha);
             respuesta.setFecha(fechaCreacion);
-            respuesta.setMensaje("Actualización exitosa");
+            respuesta.setMensaje("Actualización RUN: "+ usuario.run +", Exitosa");
+        }else{
+            respuesta.setFecha(fechaActual());
+            respuesta.setMensaje("Usuario RUN: "+ usuario.run +", Inexistente");
         }
-        respuesta.setMensaje("Usuario Inexistente");
         return  respuesta;
+    }
+
+    private String fechaActual(){
+        LocalDateTime requestDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        return requestDateTime.format(formatter);
     }
 
 }
