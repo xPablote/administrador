@@ -38,7 +38,6 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Obtiene un usuarios correctamente"),
             @ApiResponse(responseCode = "404", description = "usuario inexistente")
     })
-
     @GetMapping("/getUsuario/{rut}")
     public ResponseEntity<Usuario> getUsuario(
             @PathVariable String rut) throws Exception {
@@ -51,12 +50,12 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Obtiene lista usuarios correctamente"),
             @ApiResponse(responseCode = "404", description = "usuarios inexistentes")
     })
-
-    @GetMapping("/getUsuarios")
-    public ResponseEntity<List<Usuario>> getUsuarios() throws Exception {
+    @GetMapping("/listUsuarios")
+    public ResponseEntity<List<Usuario>> listUsuarios() throws Exception {
         List<Usuario> resp = usuarioService.getUsuarios();
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
+
     @Operation(summary = "Modifica un usuario")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Modificó un usuario correctamente"),
