@@ -9,10 +9,10 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,11 +26,14 @@ import java.util.concurrent.ExecutionException;
 public class UsuarioServiceImpl  implements UsuarioService {
     private static final String FIRESTORE_COLLECTION = "usuarios";
 
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioServiceImpl.class);
+
     @Autowired
     private Firestore firestore;
 
     @Override
-    public ResponseFirestore createUsuario(Usuario usuario) throws ExecutionException, InterruptedException, ParseException {
+    public ResponseFirestore createUsuario(Usuario usuario) throws ExecutionException, InterruptedException {
+        logger.info("[UsuarioServiceImpl] ::: Iniciando el método createUsuario() ::: "+usuario);
         firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.run);
         ResponseFirestore respuesta = new ResponseFirestore();
@@ -38,6 +41,7 @@ public class UsuarioServiceImpl  implements UsuarioService {
             respuesta.setRun(usuario.run);
             respuesta.setFecha(fechaActual());
             respuesta.setMensaje("Usuario RUN: " + usuario.run + " ya existe");
+            logger.info("[UsuarioServiceImpl] ::: Fin del método createUsuario() ::: Usuario existente "+usuario.run);
             return respuesta;
         }
         ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
@@ -47,25 +51,28 @@ public class UsuarioServiceImpl  implements UsuarioService {
         Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
         String fechaCreacion = formatter.format(fecha);
         respuesta.setFecha(fechaCreacion);
-        respuesta.setMensaje("Usuario RUN: " + usuario.run + "agregado correctamente");
-
+        respuesta.setMensaje("Usuario RUN: " + usuario.run + " agregado correctamente");
+        logger.info("[UsuarioServiceImpl] ::: Fin del método createUsuario() ::: Usuario creado exitosamente: "+usuario.run);
         return respuesta;
     }
 
-    public Usuario getUsuario(String rut) throws ExecutionException, InterruptedException{
+    public Usuario getUsuario(String run) throws ExecutionException, InterruptedException{
+        logger.info("[UsuarioServiceImpl] ::: Iniciando el método getUsuario() ::: "+run);
         firestore = FirestoreClient.getFirestore();
-
-        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(rut);
+        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(run);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot documentSnapshot = future.get();
         Usuario usuario = null;
         if (documentSnapshot.exists()) {
+            logger.info("[UsuarioServiceImpl] ::: Fin del método getUsuario() ::: Usuario obtenido exitosamente: "+run);
             return usuario = documentSnapshot.toObject(Usuario.class);
         }
+        logger.info("[UsuarioServiceImpl] ::: Fin del método getUsuario() ::: Usuario inexistente: "+run);
         return usuario;
     }
 
     public List<Usuario> getUsuarios() throws ExecutionException, InterruptedException {
+        logger.info("[UsuarioServiceImpl] ::: Iniciando el método getUsuarios() ::: ");
         firestore = FirestoreClient.getFirestore();
         Iterable<DocumentReference> documentReference = firestore.collection(FIRESTORE_COLLECTION).listDocuments();
         Iterator<DocumentReference> iterator = documentReference.iterator();
@@ -78,16 +85,19 @@ public class UsuarioServiceImpl  implements UsuarioService {
             usuario = snapshot.toObject(Usuario.class);
             usuarios.add(usuario);
         }
+        logger.info("[UsuarioServiceImpl] ::: Fin del método getUsuarios() ::: "+usuarios);
         return usuarios;
     }
 
     @Override
     public ResponseFirestore updateUsuario(Usuario usuario) throws ExecutionException, InterruptedException {
+        logger.info("[UsuarioServiceImpl] ::: Iniciando el método updateUsuario() ::: "+usuario.run);
         firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.run);
         ResponseFirestore respuesta = new ResponseFirestore();
         DocumentSnapshot documentSnapshot = documentReference.get().get();
         if (documentSnapshot.exists()){
+            logger.info("[UsuarioServiceImpl] ::: Fin del método updateUsuario() ::: Usuario modificado exitosamente RUN: "+documentSnapshot.getId());
             String rut = documentReference.getId();
             ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
             respuesta.setRun(rut);
@@ -97,6 +107,7 @@ public class UsuarioServiceImpl  implements UsuarioService {
             respuesta.setFecha(fechaCreacion);
             respuesta.setMensaje("Actualización RUN: "+ usuario.run +", Exitosa");
         }else{
+            logger.info("[UsuarioServiceImpl] ::: Fin del método updateUsuario() ::: Usuario Inexistente RUN: "+usuario.run);
             respuesta.setFecha(fechaActual());
             respuesta.setMensaje("Usuario RUN: "+ usuario.run +", Inexistente");
         }
