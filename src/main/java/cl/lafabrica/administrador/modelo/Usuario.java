@@ -2,6 +2,8 @@ package cl.lafabrica.administrador.modelo;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 
 @Data
 public class Usuario {
@@ -16,5 +18,6 @@ public class Usuario {
     public Integer fono;
     public String fechaNacimiento;
     public String tipoUsuario;
+    public Timestamp fechaRegistro;
 
 }
