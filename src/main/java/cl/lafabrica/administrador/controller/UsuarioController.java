@@ -1,7 +1,7 @@
 package cl.lafabrica.administrador.controller;
 
 import cl.lafabrica.administrador.modelo.Usuario;
-import cl.lafabrica.administrador.pojo.response.ResponseFirestore;
+import cl.lafabrica.administrador.pojo.response.ResponseFirestoreUsuario;
 import cl.lafabrica.administrador.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,10 +27,10 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "Creacion de usuario sin exito")
     })
     @PostMapping("/createUsuario")
-    public ResponseEntity<ResponseFirestore> createUsuario(
+    public ResponseEntity<ResponseFirestoreUsuario> createUsuario(
             @RequestBody Usuario usuario) throws Exception {
-        ResponseFirestore resp = usuarioService.createUsuario(usuario);
-        return new ResponseEntity<ResponseFirestore>(resp, HttpStatus.OK);
+        ResponseFirestoreUsuario resp = usuarioService.createUsuario(usuario);
+        return new ResponseEntity<ResponseFirestoreUsuario>(resp, HttpStatus.OK);
     }
 
     @Operation(summary = "Obtiene un usuario")
@@ -62,10 +62,10 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "Modificación de usuario sin exito")
     })
     @PutMapping("/updateUsuario")
-    public ResponseEntity<ResponseFirestore> updateUsuario(
+    public ResponseEntity<ResponseFirestoreUsuario> updateUsuario(
             @RequestBody Usuario usuario) throws Exception {
-        ResponseFirestore resp = usuarioService.updateUsuario(usuario);
-        return new ResponseEntity<ResponseFirestore>(resp, HttpStatus.OK);
+        ResponseFirestoreUsuario resp = usuarioService.updateUsuario(usuario);
+        return new ResponseEntity<ResponseFirestoreUsuario>(resp, HttpStatus.OK);
     }
 
 

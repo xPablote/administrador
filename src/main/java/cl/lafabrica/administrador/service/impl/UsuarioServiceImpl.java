@@ -1,7 +1,7 @@
 package cl.lafabrica.administrador.service.impl;
 
 import cl.lafabrica.administrador.modelo.Usuario;
-import cl.lafabrica.administrador.pojo.response.ResponseFirestore;
+import cl.lafabrica.administrador.pojo.response.ResponseFirestoreUsuario;
 import cl.lafabrica.administrador.service.UsuarioService;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
@@ -32,11 +32,11 @@ public class UsuarioServiceImpl  implements UsuarioService {
     private Firestore firestore;
 
     @Override
-    public ResponseFirestore createUsuario(Usuario usuario) throws ExecutionException, InterruptedException {
+    public ResponseFirestoreUsuario createUsuario(Usuario usuario) throws ExecutionException, InterruptedException {
         logger.info("[UsuarioServiceImpl] ::: Iniciando el método createUsuario() ::: "+usuario);
         firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.run);
-        ResponseFirestore respuesta = new ResponseFirestore();
+        ResponseFirestoreUsuario respuesta = new ResponseFirestoreUsuario();
         if (documentReference.get().get().exists()) {
             respuesta.setRun(usuario.run);
             respuesta.setFecha(fechaActual());
@@ -90,11 +90,11 @@ public class UsuarioServiceImpl  implements UsuarioService {
     }
 
     @Override
-    public ResponseFirestore updateUsuario(Usuario usuario) throws ExecutionException, InterruptedException {
+    public ResponseFirestoreUsuario updateUsuario(Usuario usuario) throws ExecutionException, InterruptedException {
         logger.info("[UsuarioServiceImpl] ::: Iniciando el método updateUsuario() ::: "+usuario.run);
         firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.run);
-        ResponseFirestore respuesta = new ResponseFirestore();
+        ResponseFirestoreUsuario respuesta = new ResponseFirestoreUsuario();
         DocumentSnapshot documentSnapshot = documentReference.get().get();
         if (documentSnapshot.exists()){
             logger.info("[UsuarioServiceImpl] ::: Fin del método updateUsuario() ::: Usuario modificado exitosamente RUN: "+documentSnapshot.getId());
