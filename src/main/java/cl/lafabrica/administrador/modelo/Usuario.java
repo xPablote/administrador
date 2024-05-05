@@ -16,7 +16,7 @@ public class Usuario {
     public String maternoApellido;
     public String email;
     public Integer fono;
-    public String fechaNacimiento;
+    public Timestamp fechaNacimiento;
     public String tipoUsuario;
     public Timestamp fechaRegistro;
 
