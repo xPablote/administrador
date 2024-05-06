@@ -1,5 +1,6 @@
 package cl.lafabrica.administrador.controller;
 
+import cl.lafabrica.administrador.modelo.Estado;
 import cl.lafabrica.administrador.modelo.Usuario;
 import cl.lafabrica.administrador.pojo.response.ResponseFirestoreUsuario;
 import cl.lafabrica.administrador.service.UsuarioService;
@@ -38,10 +39,10 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Obtiene un usuarios correctamente"),
             @ApiResponse(responseCode = "404", description = "usuario inexistente")
     })
-    @GetMapping("/getUsuario/{rut}")
+    @GetMapping("/getUsuario/{run}")
     public ResponseEntity<Usuario> getUsuario(
-            @PathVariable String rut) throws Exception {
-        Usuario resp = usuarioService.getUsuario(rut);
+            @PathVariable String run) throws Exception {
+        Usuario resp = usuarioService.getUsuario(run);
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
@@ -68,6 +69,17 @@ public class UsuarioController {
         return new ResponseEntity<ResponseFirestoreUsuario>(resp, HttpStatus.OK);
     }
 
-
+    @Operation(summary = "Modifica estado de un usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Modificó estado de un usuario correctamente"),
+            @ApiResponse(responseCode = "404", description = "Modificación cambio de estado sin exito")
+    })
+    @PutMapping("/changeStateUsuario/{run}/{estado}")
+    public ResponseEntity<ResponseFirestoreUsuario> changeStateUsuario(
+            @PathVariable String run,
+            @PathVariable Estado estado) throws Exception {
+        ResponseFirestoreUsuario resp = usuarioService.changeStateUsuario(run,estado);
+        return new ResponseEntity<ResponseFirestoreUsuario>(resp, HttpStatus.OK);
+    }
 
 }

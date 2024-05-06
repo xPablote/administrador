@@ -1,13 +1,12 @@
 package cl.lafabrica.administrador.service.impl;
 
+import cl.lafabrica.administrador.modelo.Estado;
+import cl.lafabrica.administrador.modelo.RolUsuario;
 import cl.lafabrica.administrador.modelo.Usuario;
 import cl.lafabrica.administrador.pojo.response.ResponseFirestoreUsuario;
 import cl.lafabrica.administrador.service.UsuarioService;
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +15,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -62,10 +58,26 @@ public class UsuarioServiceImpl  implements UsuarioService {
         DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(run);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot documentSnapshot = future.get();
-        Usuario usuario = null;
+        Usuario usuario = new Usuario();
         if (documentSnapshot.exists()) {
             logger.info("[UsuarioServiceImpl] ::: Fin del método getUsuario() ::: Usuario obtenido exitosamente: "+run);
-            return usuario = documentSnapshot.toObject(Usuario.class);
+            usuario.setRun(documentSnapshot.getId());
+            usuario.setDv(documentSnapshot.getString("dv"));
+            usuario.setPrimerNombre(documentSnapshot.getString("primerNombre"));
+            usuario.setSegundoNombre(documentSnapshot.getString("segundoNombre"));
+            usuario.setPaternoApellido(documentSnapshot.getString("paternoApellido"));
+            usuario.setMaternoApellido(documentSnapshot.getString("maternoApellido"));
+            usuario.setEmail(documentSnapshot.getString("email"));
+            usuario.setFono(documentSnapshot.getLong("fono"));
+            usuario.setFechaNacimiento(documentSnapshot.getTimestamp("fechaNacimiento").toSqlTimestamp());
+            usuario.setFechaRegistro(documentSnapshot.getTimestamp("fechaRegistro").toSqlTimestamp());
+            String rolUsuarioString = documentSnapshot.getString("rolUsuario");
+            RolUsuario rolUsuario = RolUsuario.valueOf(rolUsuarioString);
+            usuario.setRolUsuario(rolUsuario);
+            String estadoString = documentSnapshot.getString("estado");
+            Estado estado = Estado.valueOf(estadoString);
+            usuario.setEstado(estado);
+            return usuario;
         }
         logger.info("[UsuarioServiceImpl] ::: Fin del método getUsuario() ::: Usuario inexistente: "+run);
         return usuario;
@@ -74,15 +86,26 @@ public class UsuarioServiceImpl  implements UsuarioService {
     public List<Usuario> getUsuarios() throws ExecutionException, InterruptedException {
         logger.info("[UsuarioServiceImpl] ::: Iniciando el método getUsuarios() ::: ");
         firestore = FirestoreClient.getFirestore();
-        Iterable<DocumentReference> documentReference = firestore.collection(FIRESTORE_COLLECTION).listDocuments();
-        Iterator<DocumentReference> iterator = documentReference.iterator();
+        QuerySnapshot querySnapshot = firestore.collection(FIRESTORE_COLLECTION).get().get();
         List<Usuario> usuarios = new ArrayList<>();
-        Usuario usuario = null;
-        while (iterator.hasNext()) {
-            DocumentReference documentReference1 = iterator.next();
-            ApiFuture<DocumentSnapshot> future = documentReference1.get();
-            DocumentSnapshot snapshot = future.get();
-            usuario = snapshot.toObject(Usuario.class);
+        for (QueryDocumentSnapshot document : querySnapshot.getDocuments()) {
+            Usuario usuario = new Usuario();
+            usuario.setRun(document.getId());
+            usuario.setDv(document.getString("dv"));
+            usuario.setPrimerNombre(document.getString("primerNombre"));
+            usuario.setSegundoNombre(document.getString("segundoNombre"));
+            usuario.setPaternoApellido(document.getString("paternoApellido"));
+            usuario.setMaternoApellido(document.getString("maternoApellido"));
+            usuario.setEmail(document.getString("email"));
+            usuario.setFono(document.getLong("fono"));
+            usuario.setFechaNacimiento(document.getTimestamp("fechaNacimiento").toSqlTimestamp());
+            usuario.setFechaRegistro(document.getTimestamp("fechaRegistro").toSqlTimestamp());
+            String rolUsuarioString = document.getString("rolUsuario");
+            RolUsuario rolUsuario = RolUsuario.valueOf(rolUsuarioString);
+            usuario.setRolUsuario(rolUsuario);
+            String estadoString = document.getString("estado");
+            Estado estado = Estado.valueOf(estadoString);
+            usuario.setEstado(estado);
             usuarios.add(usuario);
         }
         logger.info("[UsuarioServiceImpl] ::: Fin del método getUsuarios() ::: "+usuarios);
@@ -108,6 +131,7 @@ public class UsuarioServiceImpl  implements UsuarioService {
             respuesta.setMensaje("Actualización RUN: "+ usuario.run +", Exitosa");
         }else{
             logger.info("[UsuarioServiceImpl] ::: Fin del método updateUsuario() ::: Usuario Inexistente RUN: "+usuario.run);
+            respuesta.setRun(usuario.run);
             respuesta.setFecha(fechaActual());
             respuesta.setMensaje("Usuario RUN: "+ usuario.run +", Inexistente");
         }
@@ -118,6 +142,30 @@ public class UsuarioServiceImpl  implements UsuarioService {
         LocalDateTime requestDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         return requestDateTime.format(formatter);
+    }
+
+    public ResponseFirestoreUsuario changeStateUsuario(String run, Estado nuevoEstado) throws InterruptedException, ExecutionException {
+        logger.info("[UsuarioServiceImpl] ::: Iniciando el método changeStateUsuario() ::: "+run);
+        firestore = FirestoreClient.getFirestore();
+        DocumentReference usuarioRef = firestore.collection("usuarios").document(run);
+        ApiFuture<DocumentSnapshot> future = usuarioRef.get();
+        DocumentSnapshot documento = future.get();
+        ResponseFirestoreUsuario respuesta = new ResponseFirestoreUsuario();
+        if (documento.exists()) {
+            Map<String, Object> usuarioData = documento.getData();
+            usuarioData.put("estado", nuevoEstado.getTipoEstado());
+            usuarioRef.set(usuarioData, SetOptions.merge()).get();
+            respuesta.setRun(run);
+            respuesta.setFecha(fechaActual());
+            respuesta.setMensaje("Usuario RUN: " + run + " cambio de estado: " + nuevoEstado.getTipoEstado());
+            logger.info("[UsuarioServiceImpl] ::: Fin del método changeStateUsuario() ::: Usuario RUN: "+run+", nuevo Estado: "+nuevoEstado.getTipoEstado()+", cambio de Estado exitoso: ");
+        } else {
+            logger.info("[UsuarioServiceImpl] ::: Fin del método changeStateUsuario() ::: Usuario Inexistente RUN: "+run);
+            respuesta.setRun(run);
+            respuesta.setFecha(fechaActual());
+            respuesta.setMensaje("Usuario RUN: "+ run +", Inexistente");
+        }
+        return  respuesta;
     }
 
 }
