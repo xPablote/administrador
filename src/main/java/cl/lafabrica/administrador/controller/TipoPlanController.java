@@ -1,7 +1,6 @@
 package cl.lafabrica.administrador.controller;
 
 import cl.lafabrica.administrador.modelo.TipoPlan;
-import cl.lafabrica.administrador.modelo.Usuario;
 import cl.lafabrica.administrador.pojo.response.ResponseFirestoreTipoPlan;
 import cl.lafabrica.administrador.service.TipoPlanService;
 import io.swagger.v3.oas.annotations.Operation;
