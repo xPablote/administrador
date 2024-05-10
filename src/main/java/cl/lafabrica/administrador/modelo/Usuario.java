@@ -24,5 +24,5 @@ public class Usuario {
     public Timestamp fechaRegistro;
     @PropertyName("estado")
     public Estado estado;
-
+    public String idTipoPlan;
 }

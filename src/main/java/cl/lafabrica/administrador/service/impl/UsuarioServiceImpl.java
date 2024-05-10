@@ -77,6 +77,7 @@ public class UsuarioServiceImpl  implements UsuarioService {
             String estadoString = documentSnapshot.getString("estado");
             Estado estado = Estado.valueOf(estadoString);
             usuario.setEstado(estado);
+            usuario.setIdTipoPlan(documentSnapshot.getString("idTipoPlan"));
             return usuario;
         }
         logger.info("[UsuarioServiceImpl] ::: Fin del método getUsuario() ::: Usuario inexistente: "+run);
@@ -106,6 +107,7 @@ public class UsuarioServiceImpl  implements UsuarioService {
             String estadoString = document.getString("estado");
             Estado estado = Estado.valueOf(estadoString);
             usuario.setEstado(estado);
+            usuario.setIdTipoPlan(document.getString("idTipoPlan"));
             usuarios.add(usuario);
         }
         logger.info("[UsuarioServiceImpl] ::: Fin del método getUsuarios() ::: "+usuarios);
