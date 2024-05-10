@@ -71,10 +71,10 @@ public class TipoPlanServiceImpl implements TipoPlanService {
         DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(idTipoPlan);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot documentSnapshot = future.get();
-        TipoPlan tipoPlan = null;
+        TipoPlan tipoPlan = new TipoPlan();
         if (documentSnapshot.exists()) {
             logger.info("[TipoPlanServiceImpl] ::: Fin del método getTipoPlan() ::: TipoPlan obtenido exitosamente: "+idTipoPlan);
-            return tipoPlan = documentSnapshot.toObject(TipoPlan.class);
+            return this.getMapTipoPlan(tipoPlan, documentSnapshot);
         }
         logger.info("[TipoPlanServiceImpl] ::: Fin del método getTipoPlan() ::: TipoPlan inexistente: "+idTipoPlan);
         return tipoPlan;
@@ -87,13 +87,12 @@ public class TipoPlanServiceImpl implements TipoPlanService {
         Iterable<DocumentReference> documentReference = firestore.collection(FIRESTORE_COLLECTION).listDocuments();
         Iterator<DocumentReference> iterator = documentReference.iterator();
         List<TipoPlan> tipoPlanes = new ArrayList<>();
-        TipoPlan tipoPlan = null;
+        TipoPlan tipoPlan = new TipoPlan();
         while (iterator.hasNext()) {
             DocumentReference documentReference1 = iterator.next();
             ApiFuture<DocumentSnapshot> future = documentReference1.get();
             DocumentSnapshot snapshot = future.get();
-            tipoPlan = snapshot.toObject(TipoPlan.class);
-            tipoPlanes.add(tipoPlan);
+            tipoPlanes.add(this.getMapTipoPlan(tipoPlan, snapshot));
         }
         logger.info("[TipoPlanServiceImpl] ::: Fin del método listTipoPlanes() ::: "+tipoPlanes);
         return tipoPlanes;
@@ -122,5 +121,14 @@ public class TipoPlanServiceImpl implements TipoPlanService {
             respuesta.setMensaje("TipoPlan Id: "+ tipoPlan.getIdTipoPlan() +", Inexistente");
         }
         return  respuesta;
+    }
+
+    private TipoPlan getMapTipoPlan(TipoPlan tipoPlan, DocumentSnapshot documentSnapshot) {
+        tipoPlan.setIdTipoPlan(documentSnapshot.getId());
+        tipoPlan.setNombrePlan(documentSnapshot.getString("nombrePlan"));
+        tipoPlan.setValorPlan(documentSnapshot.getLong("valorPlan"));
+        tipoPlan.setFechaInicioPlan(documentSnapshot.getTimestamp("fechaInicioPlan").toSqlTimestamp());
+        tipoPlan.setFechaPagoPlan(documentSnapshot.getTimestamp("fechaPagoPlan").toSqlTimestamp());
+        return tipoPlan;
     }
 }
