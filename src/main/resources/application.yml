@@ -1,3 +1,8 @@
 spring:
   application:
-    name: Gestor Administrativo de La Fabrica
+    name: Fabrica
+logging:
+  level:
+    org:
+      springframework:
+        security: info
