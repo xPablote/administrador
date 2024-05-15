@@ -53,7 +53,6 @@ public class UsuarioServiceImpl  implements UsuarioService {
         return respuesta;
     }
 
-    @PreAuthorize("isAnonymous()")
     public Usuario getUsuario(String run) throws ExecutionException, InterruptedException{
         logger.info("[UsuarioServiceImpl] ::: Iniciando el método getUsuario() ::: "+run);
         firestore = FirestoreClient.getFirestore();
@@ -75,7 +74,6 @@ public class UsuarioServiceImpl  implements UsuarioService {
             usuario.setFechaRegistro(documentSnapshot.getTimestamp("fechaRegistro").toSqlTimestamp());
             String rolUsuarioString = documentSnapshot.getString("rolUsuario");
             RolUsuario rolUsuario = RolUsuario.valueOf(rolUsuarioString);
-            usuario.setRolUsuario(rolUsuario);
             String estadoString = documentSnapshot.getString("estado");
             Estado estado = Estado.valueOf(estadoString);
             usuario.setEstado(estado);
@@ -105,7 +103,6 @@ public class UsuarioServiceImpl  implements UsuarioService {
             usuario.setFechaRegistro(document.getTimestamp("fechaRegistro").toSqlTimestamp());
             String rolUsuarioString = document.getString("rolUsuario");
             RolUsuario rolUsuario = RolUsuario.valueOf(rolUsuarioString);
-            usuario.setRolUsuario(rolUsuario);
             String estadoString = document.getString("estado");
             Estado estado = Estado.valueOf(estadoString);
             usuario.setEstado(estado);
