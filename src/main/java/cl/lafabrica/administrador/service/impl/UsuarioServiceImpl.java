@@ -11,6 +11,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -52,6 +53,7 @@ public class UsuarioServiceImpl  implements UsuarioService {
         return respuesta;
     }
 
+    @PreAuthorize("isAnonymous()")
     public Usuario getUsuario(String run) throws ExecutionException, InterruptedException{
         logger.info("[UsuarioServiceImpl] ::: Iniciando el método getUsuario() ::: "+run);
         firestore = FirestoreClient.getFirestore();
