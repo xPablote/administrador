@@ -16,17 +16,18 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class Usuario {
     @DocumentId
-    public String run;
-    public String dv;
-    public String primerNombre;
-    public String segundoNombre;
-    public String paternoApellido;
-    public String maternoApellido;
-    public String email;
-    public Long fono;
-    public Timestamp fechaNacimiento;
-    public Timestamp fechaRegistro;
+    private String run;
+    private String dv;
+    private String primerNombre;
+    private String segundoNombre;
+    private String paternoApellido;
+    private String maternoApellido;
+    private String email;
+    private Long fono;
+    private Timestamp fechaNacimiento;
+    private Timestamp fechaRegistro;
     @PropertyName("estado")
-    public Estado estado;
-    public String idTipoPlan;
+    private Estado estado;
+    private String idTipoPlan;
+    private Long descuento;
 }

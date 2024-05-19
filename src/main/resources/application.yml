@@ -1,6 +1,8 @@
 spring:
   application:
     name: Fabrica
+server:
+  port: 9000
 logging:
   level:
     org:
