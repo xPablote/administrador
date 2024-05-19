@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Data
-public class ResponseFirestoreTipoPlan {
+public class ResponseFirestore {
 
     private String id;
     private String fecha;

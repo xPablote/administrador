@@ -70,8 +70,6 @@ public class UsuarioServiceImpl  implements UsuarioService {
             usuario.setFono(documentSnapshot.getLong("fono"));
             usuario.setFechaNacimiento(documentSnapshot.getTimestamp("fechaNacimiento").toSqlTimestamp());
             usuario.setFechaRegistro(documentSnapshot.getTimestamp("fechaRegistro").toSqlTimestamp());
-//            String rolUsuarioString = documentSnapshot.getString("rolUsuario");
-//            RolUsuario rolUsuario = RolUsuario.valueOf(rolUsuarioString);
             String estadoString = documentSnapshot.getString("estado");
             Estado estado = Estado.valueOf(estadoString);
             usuario.setEstado(estado);
@@ -99,8 +97,6 @@ public class UsuarioServiceImpl  implements UsuarioService {
             usuario.setFono(document.getLong("fono"));
             usuario.setFechaNacimiento(document.getTimestamp("fechaNacimiento").toSqlTimestamp());
             usuario.setFechaRegistro(document.getTimestamp("fechaRegistro").toSqlTimestamp());
-//            String rolUsuarioString = document.getString("rolUsuario");
-//            RolUsuario rolUsuario = RolUsuario.valueOf(rolUsuarioString);
             String estadoString = document.getString("estado");
             Estado estado = Estado.valueOf(estadoString);
             usuario.setEstado(estado);
