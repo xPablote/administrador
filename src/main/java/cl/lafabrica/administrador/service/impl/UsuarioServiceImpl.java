@@ -1,7 +1,6 @@
 package cl.lafabrica.administrador.service.impl;
 
 import cl.lafabrica.administrador.modelo.Estado;
-import cl.lafabrica.administrador.modelo.RolUsuario;
 import cl.lafabrica.administrador.modelo.Usuario;
 import cl.lafabrica.administrador.pojo.response.ResponseFirestoreUsuario;
 import cl.lafabrica.administrador.service.UsuarioService;
@@ -11,7 +10,6 @@ import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -32,13 +30,13 @@ public class UsuarioServiceImpl  implements UsuarioService {
     public ResponseFirestoreUsuario createUsuario(Usuario usuario) throws ExecutionException, InterruptedException {
         logger.info("[UsuarioServiceImpl] ::: Iniciando el método createUsuario() ::: "+usuario);
         firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.run);
+        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.getRun() );
         ResponseFirestoreUsuario respuesta = new ResponseFirestoreUsuario();
         if (documentReference.get().get().exists()) {
-            respuesta.setRun(usuario.run);
+            respuesta.setRun(usuario.getRun());
             respuesta.setFecha(fechaActual());
-            respuesta.setMensaje("Usuario RUN: " + usuario.run + " ya existe");
-            logger.info("[UsuarioServiceImpl] ::: Fin del método createUsuario() ::: Usuario existente "+usuario.run);
+            respuesta.setMensaje("Usuario RUN: " + usuario.getRun() + " ya existe");
+            logger.info("[UsuarioServiceImpl] ::: Fin del método createUsuario() ::: Usuario existente "+usuario.getRun() );
             return respuesta;
         }
         ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
@@ -48,8 +46,8 @@ public class UsuarioServiceImpl  implements UsuarioService {
         Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
         String fechaCreacion = formatter.format(fecha);
         respuesta.setFecha(fechaCreacion);
-        respuesta.setMensaje("Usuario RUN: " + usuario.run + " agregado correctamente");
-        logger.info("[UsuarioServiceImpl] ::: Fin del método createUsuario() ::: Usuario creado exitosamente: "+usuario.run);
+        respuesta.setMensaje("Usuario RUN: " + usuario.getRun()  + " agregado correctamente");
+        logger.info("[UsuarioServiceImpl] ::: Fin del método createUsuario() ::: Usuario creado exitosamente: "+usuario.getRun() );
         return respuesta;
     }
 
@@ -72,8 +70,8 @@ public class UsuarioServiceImpl  implements UsuarioService {
             usuario.setFono(documentSnapshot.getLong("fono"));
             usuario.setFechaNacimiento(documentSnapshot.getTimestamp("fechaNacimiento").toSqlTimestamp());
             usuario.setFechaRegistro(documentSnapshot.getTimestamp("fechaRegistro").toSqlTimestamp());
-            String rolUsuarioString = documentSnapshot.getString("rolUsuario");
-            RolUsuario rolUsuario = RolUsuario.valueOf(rolUsuarioString);
+//            String rolUsuarioString = documentSnapshot.getString("rolUsuario");
+//            RolUsuario rolUsuario = RolUsuario.valueOf(rolUsuarioString);
             String estadoString = documentSnapshot.getString("estado");
             Estado estado = Estado.valueOf(estadoString);
             usuario.setEstado(estado);
@@ -101,8 +99,8 @@ public class UsuarioServiceImpl  implements UsuarioService {
             usuario.setFono(document.getLong("fono"));
             usuario.setFechaNacimiento(document.getTimestamp("fechaNacimiento").toSqlTimestamp());
             usuario.setFechaRegistro(document.getTimestamp("fechaRegistro").toSqlTimestamp());
-            String rolUsuarioString = document.getString("rolUsuario");
-            RolUsuario rolUsuario = RolUsuario.valueOf(rolUsuarioString);
+//            String rolUsuarioString = document.getString("rolUsuario");
+//            RolUsuario rolUsuario = RolUsuario.valueOf(rolUsuarioString);
             String estadoString = document.getString("estado");
             Estado estado = Estado.valueOf(estadoString);
             usuario.setEstado(estado);
@@ -115,9 +113,9 @@ public class UsuarioServiceImpl  implements UsuarioService {
 
     @Override
     public ResponseFirestoreUsuario updateUsuario(Usuario usuario) throws ExecutionException, InterruptedException {
-        logger.info("[UsuarioServiceImpl] ::: Iniciando el método updateUsuario() ::: "+usuario.run);
+        logger.info("[UsuarioServiceImpl] ::: Iniciando el método updateUsuario() ::: "+usuario.getRun() );
         firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.run);
+        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(usuario.getRun() );
         ResponseFirestoreUsuario respuesta = new ResponseFirestoreUsuario();
         DocumentSnapshot documentSnapshot = documentReference.get().get();
         if (documentSnapshot.exists()){
@@ -129,12 +127,12 @@ public class UsuarioServiceImpl  implements UsuarioService {
             Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
             String fechaCreacion = formatter.format(fecha);
             respuesta.setFecha(fechaCreacion);
-            respuesta.setMensaje("Actualización RUN: "+ usuario.run +", Exitosa");
+            respuesta.setMensaje("Actualización RUN: "+ usuario.getRun()  +", Exitosa");
         }else{
-            logger.info("[UsuarioServiceImpl] ::: Fin del método updateUsuario() ::: Usuario Inexistente RUN: "+usuario.run);
-            respuesta.setRun(usuario.run);
+            logger.info("[UsuarioServiceImpl] ::: Fin del método updateUsuario() ::: Usuario Inexistente RUN: "+usuario.getRun() );
+            respuesta.setRun(usuario.getRun() );
             respuesta.setFecha(fechaActual());
-            respuesta.setMensaje("Usuario RUN: "+ usuario.run +", Inexistente");
+            respuesta.setMensaje("Usuario RUN: "+ usuario.getRun()  +", Inexistente");
         }
         return  respuesta;
     }
