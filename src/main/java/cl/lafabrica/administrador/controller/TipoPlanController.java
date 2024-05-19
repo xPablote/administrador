@@ -1,7 +1,7 @@
 package cl.lafabrica.administrador.controller;
 
 import cl.lafabrica.administrador.modelo.TipoPlan;
-import cl.lafabrica.administrador.pojo.response.ResponseFirestoreTipoPlan;
+import cl.lafabrica.administrador.pojo.response.ResponseFirestore;
 import cl.lafabrica.administrador.service.TipoPlanService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,10 +29,10 @@ public class TipoPlanController {
             @ApiResponse(responseCode = "404", description = "Creacion de TipoPlan sin exito")
     })
     @PostMapping("/createTipoPlan")
-    public ResponseEntity<ResponseFirestoreTipoPlan> createTipoPlan(
+    public ResponseEntity<ResponseFirestore> createTipoPlan(
             @RequestBody TipoPlan tipoPlan) throws Exception {
-        ResponseFirestoreTipoPlan resp = tipoPlanService.createTipoPlan(tipoPlan);
-        return new ResponseEntity<ResponseFirestoreTipoPlan>(resp, HttpStatus.OK);
+        ResponseFirestore resp = tipoPlanService.createTipoPlan(tipoPlan);
+        return new ResponseEntity<ResponseFirestore>(resp, HttpStatus.OK);
     }
 
     @Operation(summary = "Obtiene un TipoPlan")
@@ -64,10 +64,10 @@ public class TipoPlanController {
             @ApiResponse(responseCode = "404", description = "Modificación de TipoPlan sin exito")
     })
     @PutMapping("/updateTipoPlan")
-    public ResponseEntity<ResponseFirestoreTipoPlan> updateTipoPlan(
+    public ResponseEntity<ResponseFirestore> updateTipoPlan(
             @RequestBody TipoPlan tipoPlan) throws Exception {
-        ResponseFirestoreTipoPlan resp = tipoPlanService.updateTipoPlan(tipoPlan);
-        return new ResponseEntity<ResponseFirestoreTipoPlan>(resp, HttpStatus.OK);
+        ResponseFirestore resp = tipoPlanService.updateTipoPlan(tipoPlan);
+        return new ResponseEntity<ResponseFirestore>(resp, HttpStatus.OK);
     }
 
 

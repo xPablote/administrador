@@ -1,7 +1,7 @@
 package cl.lafabrica.administrador.service.impl;
 
 import cl.lafabrica.administrador.modelo.TipoPlan;
-import cl.lafabrica.administrador.pojo.response.ResponseFirestoreTipoPlan;
+import cl.lafabrica.administrador.pojo.response.ResponseFirestore;
 import cl.lafabrica.administrador.service.TipoPlanService;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
@@ -40,11 +40,11 @@ public class TipoPlanServiceImpl implements TipoPlanService {
     }
 
     @Override
-    public ResponseFirestoreTipoPlan createTipoPlan(TipoPlan tipoPlan) throws ExecutionException, InterruptedException {
+    public ResponseFirestore createTipoPlan(TipoPlan tipoPlan) throws ExecutionException, InterruptedException {
         logger.info("[TipoPlanServiceImpl] ::: Iniciando el método createTipoPlan() ::: "+tipoPlan);
         firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(tipoPlan.getIdTipoPlan());
-        ResponseFirestoreTipoPlan respuesta = new ResponseFirestoreTipoPlan();
+        ResponseFirestore respuesta = new ResponseFirestore();
         if (documentReference.get().get().exists()) {
             respuesta.setId(tipoPlan.getIdTipoPlan());
             respuesta.setFecha(fechaActual());
@@ -99,11 +99,11 @@ public class TipoPlanServiceImpl implements TipoPlanService {
     }
 
     @Override
-    public ResponseFirestoreTipoPlan updateTipoPlan(TipoPlan tipoPlan) throws ExecutionException, InterruptedException {
+    public ResponseFirestore updateTipoPlan(TipoPlan tipoPlan) throws ExecutionException, InterruptedException {
         logger.info("[TipoPlanServiceImpl] ::: Iniciando el método updateTipoPlan() ::: "+tipoPlan.getIdTipoPlan());
         firestore = FirestoreClient.getFirestore();
         DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(tipoPlan.getIdTipoPlan());
-        ResponseFirestoreTipoPlan respuesta = new ResponseFirestoreTipoPlan();
+        ResponseFirestore respuesta = new ResponseFirestore();
         DocumentSnapshot documentSnapshot = documentReference.get().get();
         if (documentSnapshot.exists()){
             logger.info("[TipoPlanServiceImpl] ::: Fin del método updateTipoPlan() ::: TipoPlan modificado exitosamente ID: "+documentSnapshot.getId());
