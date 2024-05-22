@@ -1,8 +1,8 @@
 package cl.lafabrica.administrador.service;
 
-import cl.lafabrica.administrador.modelo.Colaborador;
-import cl.lafabrica.administrador.modelo.Estado;
-import cl.lafabrica.administrador.pojo.response.ResponseFirestore;
+import cl.lafabrica.administrador.model.Colaborador;
+import cl.lafabrica.administrador.model.Estado;
+import cl.lafabrica.administrador.response.ResponseFirestore;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

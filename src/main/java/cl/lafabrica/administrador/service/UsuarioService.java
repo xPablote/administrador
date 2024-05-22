@@ -1,8 +1,8 @@
 package cl.lafabrica.administrador.service;
 
-import cl.lafabrica.administrador.modelo.Estado;
-import cl.lafabrica.administrador.modelo.Usuario;
-import cl.lafabrica.administrador.pojo.response.ResponseFirestoreUsuario;
+import cl.lafabrica.administrador.model.Estado;
+import cl.lafabrica.administrador.model.Usuario;
+import cl.lafabrica.administrador.response.ResponseFirestoreUsuario;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;

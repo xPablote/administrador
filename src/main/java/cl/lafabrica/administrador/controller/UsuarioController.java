@@ -1,8 +1,8 @@
 package cl.lafabrica.administrador.controller;
 
-import cl.lafabrica.administrador.modelo.Estado;
-import cl.lafabrica.administrador.modelo.Usuario;
-import cl.lafabrica.administrador.pojo.response.ResponseFirestoreUsuario;
+import cl.lafabrica.administrador.model.Estado;
+import cl.lafabrica.administrador.model.Usuario;
+import cl.lafabrica.administrador.response.ResponseFirestoreUsuario;
 import cl.lafabrica.administrador.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

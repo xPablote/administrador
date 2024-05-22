@@ -1,9 +1,9 @@
 package cl.lafabrica.administrador.service.impl;
 
-import cl.lafabrica.administrador.modelo.Colaborador;
-import cl.lafabrica.administrador.modelo.Estado;
-import cl.lafabrica.administrador.modelo.RolColaborador;
-import cl.lafabrica.administrador.pojo.response.ResponseFirestore;
+import cl.lafabrica.administrador.model.Colaborador;
+import cl.lafabrica.administrador.model.Estado;
+import cl.lafabrica.administrador.model.RolColaborador;
+import cl.lafabrica.administrador.response.ResponseFirestore;
 import cl.lafabrica.administrador.service.ColaboradorService;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 public class ColaboradorServiceImpl implements ColaboradorService {
-    private static final String FIRESTORE_COLLECTION = "colaborador";
+    private static final String FIRESTORE_COLLECTION = "colaboradores";
 
     private static final Logger logger = LoggerFactory.getLogger(ColaboradorServiceImpl.class);
 
