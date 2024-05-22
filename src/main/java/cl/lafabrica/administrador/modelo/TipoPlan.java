@@ -15,6 +15,7 @@ public class TipoPlan {
     private String idTipoPlan;
     private String nombrePlan;
     private Long valorPlan;
+    private String descripcionPlan;
     private Timestamp fechaInicioPlan;
     private Timestamp fechaPagoPlan;
 }
