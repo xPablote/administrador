@@ -1,4 +1,4 @@
-package cl.lafabrica.administrador.modelo;
+package cl.lafabrica.administrador.model;
 
 import com.google.cloud.firestore.annotation.PropertyName;
 import lombok.AllArgsConstructor;

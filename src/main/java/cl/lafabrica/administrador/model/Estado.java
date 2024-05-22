@@ -1,4 +1,4 @@
-package cl.lafabrica.administrador.modelo;
+package cl.lafabrica.administrador.model;
 
 import lombok.Getter;
 

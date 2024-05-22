@@ -1,6 +1,6 @@
 package cl.lafabrica.administrador.controller;
 
-import cl.lafabrica.administrador.modelo.Message;
+import cl.lafabrica.administrador.model.Message;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
