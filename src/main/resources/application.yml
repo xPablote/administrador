@@ -1,8 +1,28 @@
 spring:
   application:
-    name: Fabrica
-server:
-  port: 9000
+    name: lafabrica
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "http://127.0.0.1:9000"
+      client:
+        registration:
+          lafabrica:
+            provider: spring
+            client-id: lafabrica
+            client-secret: 12345
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/authorized"
+            scope:
+              - openid
+              - profile
+              - read
+              - write
+            client-name: lafabrica
+        provider:
+          spring:
+            issuer-uri: "http://127.0.0.1:9000"
 logging:
   level:
     org:
