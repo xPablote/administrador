@@ -55,7 +55,7 @@ public class UsuarioController {
     })
     @GetMapping("/listUsuarios")
     public ResponseEntity<List<Usuario>> listUsuarios() throws Exception {
-        List<Usuario> resp = usuarioService.getUsuarios();
+        List<Usuario> resp = usuarioService.listUsuarios();
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 

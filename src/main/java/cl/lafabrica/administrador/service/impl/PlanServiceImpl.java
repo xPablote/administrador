@@ -127,6 +127,7 @@ public class PlanServiceImpl implements PlanService {
         plan.setIdPlan(documentSnapshot.getId());
         plan.setNombrePlan(documentSnapshot.getString("nombrePlan"));
         plan.setValorPlan(documentSnapshot.getLong("valorPlan"));
+        plan.setDescripcionPlan(documentSnapshot.getString("descripcionPlan"));
         return plan;
     }
 }

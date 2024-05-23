@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/planUsuario")
+@RequestMapping(value = "/planesUsuarios")
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 @RequiredArgsConstructor
 public class PlanUsuarioController {
