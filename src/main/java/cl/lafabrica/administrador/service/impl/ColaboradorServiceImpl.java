@@ -137,12 +137,14 @@ public class ColaboradorServiceImpl implements ColaboradorService {
     }
 
     public ResponseFirestore changeStateColaborador(String username, Estado nuevoEstado) throws InterruptedException, ExecutionException {
+        logger.info("[ColaboradorServiceImpl] ::: Iniciando el método changeStateColaborador() ::: "+username+", "+nuevoEstado);
         Firestore dbFirestore = FirestoreClient.getFirestore();
         Query query = dbFirestore.collection(FIRESTORE_COLLECTION).whereEqualTo("username", username).limit(1);
         ApiFuture<QuerySnapshot> future = query.get();
         QuerySnapshot querySnapshot = future.get();
         ResponseFirestore respuesta = new ResponseFirestore();
         if(!querySnapshot.isEmpty()) {
+            logger.info("[ColaboradorServiceImpl] ::: Fin del método changeStateColaborador() ::: username: "+username+", nuevo Estado: "+nuevoEstado+", cambio de Estado exitoso: ");
             QueryDocumentSnapshot document = querySnapshot.getDocuments().get(0);
             dbFirestore.collection(FIRESTORE_COLLECTION).document(document.getId()).update("estado", nuevoEstado.name());
             String fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
@@ -150,10 +152,11 @@ public class ColaboradorServiceImpl implements ColaboradorService {
             respuesta.setId(document.getId());
             respuesta.setMensaje("Estado del colaborador actualizado correctamente.");
         } else {
+            logger.info("[ColaboradorServiceImpl] ::: Fin del método changeStateColaborador() ::: username: "+username);
             String fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             respuesta.setFecha(fecha);
             respuesta.setId(username);
-            respuesta.setMensaje("Colaborador no encontrado.");
+            respuesta.setMensaje("Colaborador "+username+" inexistente.");
         }
         return  respuesta;
     }

@@ -28,6 +28,4 @@ public class Usuario {
     private Timestamp fechaRegistro;
     @PropertyName("estado")
     private Estado estado;
-    private String idTipoPlan;
-    private Long descuento;
 }
