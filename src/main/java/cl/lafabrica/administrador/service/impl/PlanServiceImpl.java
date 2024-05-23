@@ -35,7 +35,7 @@ public class PlanServiceImpl implements PlanService {
 
     private String fechaActual(){
         LocalDateTime requestDateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return requestDateTime.format(formatter);
     }
 
