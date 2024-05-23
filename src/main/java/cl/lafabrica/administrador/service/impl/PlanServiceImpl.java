@@ -4,10 +4,7 @@ import cl.lafabrica.administrador.model.Plan;
 import cl.lafabrica.administrador.response.ResponseFirestore;
 import cl.lafabrica.administrador.service.PlanService;
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,15 +81,15 @@ public class PlanServiceImpl implements PlanService {
     public List<Plan> listPlanes() throws ExecutionException, InterruptedException {
         logger.info("[PlanServiceImpl] ::: Iniciando el método listPlanes() ::: ");
         firestore = FirestoreClient.getFirestore();
-        Iterable<DocumentReference> documentReference = firestore.collection(FIRESTORE_COLLECTION).listDocuments();
-        Iterator<DocumentReference> iterator = documentReference.iterator();
+        QuerySnapshot querySnapshot = firestore.collection(FIRESTORE_COLLECTION).get().get();
         List<Plan> planes = new ArrayList<>();
-        Plan plan = new Plan();
-        while (iterator.hasNext()) {
-            DocumentReference documentReference1 = iterator.next();
-            ApiFuture<DocumentSnapshot> future = documentReference1.get();
-            DocumentSnapshot snapshot = future.get();
-            planes.add(this.getMapPlan(plan, snapshot));
+        for (QueryDocumentSnapshot document : querySnapshot.getDocuments()) {
+            Plan plan = new Plan();
+            plan.setIdPlan(document.getId());
+            plan.setNombrePlan(document.getString("nombrePlan"));
+            plan.setDescripcionPlan(document.getString("descripcionPlan"));
+            plan.setValorPlan(document.getLong("valorPlan"));
+            planes.add(plan);
         }
         logger.info("[PlanServiceImpl] ::: Fin del método listPlanes() ::: "+ planes);
         return planes;
@@ -127,6 +124,7 @@ public class PlanServiceImpl implements PlanService {
         plan.setIdPlan(documentSnapshot.getId());
         plan.setNombrePlan(documentSnapshot.getString("nombrePlan"));
         plan.setValorPlan(documentSnapshot.getLong("valorPlan"));
+        plan.setDescripcionPlan(documentSnapshot.getString("descripcionPlan"));
         return plan;
     }
 }

@@ -14,7 +14,7 @@ public interface UsuarioService {
 
     ResponseFirestoreUsuario createUsuario(Usuario usuario) throws ExecutionException, InterruptedException, ParseException;
     Usuario getUsuario(String run) throws ExecutionException, InterruptedException, ParseException;
-    List<Usuario> getUsuarios() throws ExecutionException, InterruptedException;
+    List<Usuario> listUsuarios() throws ExecutionException, InterruptedException;
     ResponseFirestoreUsuario updateUsuario(Usuario usuario) throws ExecutionException, InterruptedException;
     ResponseFirestoreUsuario changeStateUsuario(String run, Estado nuevoEstado) throws InterruptedException, ExecutionException;
 }

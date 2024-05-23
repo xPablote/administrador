@@ -79,7 +79,7 @@ public class UsuarioServiceImpl  implements UsuarioService {
         return usuario;
     }
 
-    public List<Usuario> getUsuarios() throws ExecutionException, InterruptedException {
+    public List<Usuario> listUsuarios() throws ExecutionException, InterruptedException {
         logger.info("[UsuarioServiceImpl] ::: Iniciando el método getUsuarios() ::: ");
         firestore = FirestoreClient.getFirestore();
         QuerySnapshot querySnapshot = firestore.collection(FIRESTORE_COLLECTION).get().get();
