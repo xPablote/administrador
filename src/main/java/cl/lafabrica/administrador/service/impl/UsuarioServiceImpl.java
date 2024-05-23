@@ -42,7 +42,7 @@ public class UsuarioServiceImpl  implements UsuarioService {
         ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
         String run = documentReference.getId();
         respuesta.setRun(run);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
         String fechaCreacion = formatter.format(fecha);
         respuesta.setFecha(fechaCreacion);
@@ -117,7 +117,7 @@ public class UsuarioServiceImpl  implements UsuarioService {
             String rut = documentReference.getId();
             ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
             respuesta.setRun(rut);
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
             String fechaCreacion = formatter.format(fecha);
             respuesta.setFecha(fechaCreacion);
@@ -133,7 +133,7 @@ public class UsuarioServiceImpl  implements UsuarioService {
 
     private String fechaActual(){
         LocalDateTime requestDateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return requestDateTime.format(formatter);
     }
 

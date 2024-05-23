@@ -14,6 +14,10 @@ import java.sql.Timestamp;
 public class PlanUsuario {
     private String run;
     private String idPlan;
+    private String nombrePlan;
+    private String nombreUsuario;
+    private String apellidoUsuario;
+    private Timestamp fechaRegistroPlan;
     private Timestamp fechaInicio;
     private Timestamp fechaFin;
     private Long monto;

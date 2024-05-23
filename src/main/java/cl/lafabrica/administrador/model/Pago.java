@@ -13,7 +13,10 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class Pago {
     private String run;
+    private String nombreUsuario;
+    private String apellidoUsuario;
     private String idPlan;
+    private String nombrePlan;
     private Timestamp fechaPago;
     private Long monto;
     private String metodoPago;

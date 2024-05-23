@@ -66,7 +66,7 @@ public class ColaboradorServiceImpl implements ColaboradorService {
     public Colaborador getColaborador(String username) throws ExecutionException, InterruptedException {
         logger.info("[ColaboradorServiceImpl] ::: Iniciando el método getColaborador() ::: "+username);
         firestore = FirestoreClient.getFirestore();
-        Query query  = firestore.collection(FIRESTORE_COLLECTION).whereEqualTo("username", username);;
+        Query query  = firestore.collection(FIRESTORE_COLLECTION).whereEqualTo("username", username);
         ApiFuture<QuerySnapshot> future = query.get();
         QuerySnapshot querySnapshot = future.get();
         Colaborador colaborador = new Colaborador();
