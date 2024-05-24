@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -84,15 +83,21 @@ public class ColaboradorServiceImpl implements ColaboradorService {
     public List<Colaborador> listColaboradores() throws ExecutionException, InterruptedException {
         logger.info("[ColaboradorServiceImpl] ::: Iniciando el método listColaboradores() ::: ");
         firestore = FirestoreClient.getFirestore();
-        Iterable<DocumentReference> documentReference = firestore.collection(FIRESTORE_COLLECTION).listDocuments();
-        Iterator<DocumentReference> iterator = documentReference.iterator();
+        QuerySnapshot querySnapshot = firestore.collection(FIRESTORE_COLLECTION).get().get();
         List<Colaborador> colaboradores = new ArrayList<>();
-        Colaborador colaborador = new Colaborador();
-        while (iterator.hasNext()) {
-            DocumentReference documentReference1 = iterator.next();
-            ApiFuture<DocumentSnapshot> future = documentReference1.get();
-            DocumentSnapshot snapshot = future.get();
-            colaboradores.add(this.getMapColaborador(colaborador, snapshot));
+        for (QueryDocumentSnapshot document : querySnapshot.getDocuments()) {
+            Colaborador colaborador = new Colaborador();
+            colaborador.setUsername(document.getString("username"));
+            colaborador.setPassword(document.getString("password"));
+            colaborador.setNombre(document.getString("nombre"));
+            colaborador.setApellido(document.getString("apellido"));
+            String rolColaboradorString = document.getString("rolColaborador");
+            RolColaborador rolColaborador = RolColaborador.valueOf(rolColaboradorString);
+            colaborador.setRolColaborador(rolColaborador);
+            String estadoString = document.getString("estado");
+            Estado estado = Estado.valueOf(estadoString);
+            colaborador.setEstado(estado);
+            colaboradores.add(colaborador);
         }
         logger.info("[ColaboradorServiceImpl] ::: Fin del método listColaboradores() ::: "+colaboradores);
         return colaboradores;

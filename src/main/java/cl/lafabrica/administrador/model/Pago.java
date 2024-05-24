@@ -20,4 +20,5 @@ public class Pago {
     private Timestamp fechaPago;
     private Long monto;
     private String metodoPago;
+    private Long descuento;
 }
