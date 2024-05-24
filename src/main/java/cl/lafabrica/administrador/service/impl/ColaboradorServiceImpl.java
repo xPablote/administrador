@@ -3,6 +3,7 @@ package cl.lafabrica.administrador.service.impl;
 import cl.lafabrica.administrador.model.Colaborador;
 import cl.lafabrica.administrador.model.Estado;
 import cl.lafabrica.administrador.model.RolColaborador;
+import cl.lafabrica.administrador.model.Usuario;
 import cl.lafabrica.administrador.response.ResponseFirestore;
 import cl.lafabrica.administrador.service.ColaboradorService;
 import com.google.api.core.ApiFuture;
@@ -84,15 +85,21 @@ public class ColaboradorServiceImpl implements ColaboradorService {
     public List<Colaborador> listColaboradores() throws ExecutionException, InterruptedException {
         logger.info("[ColaboradorServiceImpl] ::: Iniciando el método listColaboradores() ::: ");
         firestore = FirestoreClient.getFirestore();
-        Iterable<DocumentReference> documentReference = firestore.collection(FIRESTORE_COLLECTION).listDocuments();
-        Iterator<DocumentReference> iterator = documentReference.iterator();
+        QuerySnapshot querySnapshot = firestore.collection(FIRESTORE_COLLECTION).get().get();
         List<Colaborador> colaboradores = new ArrayList<>();
-        Colaborador colaborador = new Colaborador();
-        while (iterator.hasNext()) {
-            DocumentReference documentReference1 = iterator.next();
-            ApiFuture<DocumentSnapshot> future = documentReference1.get();
-            DocumentSnapshot snapshot = future.get();
-            colaboradores.add(this.getMapColaborador(colaborador, snapshot));
+        for (QueryDocumentSnapshot document : querySnapshot.getDocuments()) {
+            Colaborador colaborador = new Colaborador();
+            colaborador.setUsername(document.getString("username"));
+            colaborador.setPassword(document.getString("password"));
+            colaborador.setNombre(document.getString("nombre"));
+            colaborador.setApellido(document.getString("apellido"));
+            String rolColaboradorString = document.getString("rolColaborador");
+            RolColaborador rolColaborador = RolColaborador.valueOf(rolColaboradorString);
+            colaborador.setRolColaborador(rolColaborador);
+            String estadoString = document.getString("estado");
+            Estado estado = Estado.valueOf(estadoString);
+            colaborador.setEstado(estado);
+            colaboradores.add(colaborador);
         }
         logger.info("[ColaboradorServiceImpl] ::: Fin del método listColaboradores() ::: "+colaboradores);
         return colaboradores;

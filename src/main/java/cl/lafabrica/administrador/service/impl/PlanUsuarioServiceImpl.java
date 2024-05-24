@@ -1,6 +1,7 @@
 package cl.lafabrica.administrador.service.impl;
 
 import cl.lafabrica.administrador.model.PlanUsuario;
+import cl.lafabrica.administrador.model.Usuario;
 import cl.lafabrica.administrador.response.ResponseFirestore;
 import cl.lafabrica.administrador.service.PlanUsuarioService;
 import com.google.api.core.ApiFuture;
@@ -82,15 +83,22 @@ public class PlanUsuarioServiceImpl implements PlanUsuarioService {
     public List<PlanUsuario> listPlanesUsuarios() throws ExecutionException, InterruptedException {
         logger.info("[PlanUsuarioServiceImpl] ::: Iniciando el método listPlanesUsuarios() ::: ");
         firestore = FirestoreClient.getFirestore();
-        Iterable<DocumentReference> documentReference = firestore.collection(FIRESTORE_COLLECTION).listDocuments();
-        Iterator<DocumentReference> iterator = documentReference.iterator();
+        QuerySnapshot querySnapshot = firestore.collection(FIRESTORE_COLLECTION).get().get();
         List<PlanUsuario> planesUsuarios = new ArrayList<>();
-        PlanUsuario planUsuario = new PlanUsuario();
-        while (iterator.hasNext()) {
-            DocumentReference documentReference1 = iterator.next();
-            ApiFuture<DocumentSnapshot> future = documentReference1.get();
-            DocumentSnapshot snapshot = future.get();
-            planesUsuarios.add(this.getMapPlanUsuario(planUsuario, snapshot));
+        for (QueryDocumentSnapshot document : querySnapshot.getDocuments()) {
+            PlanUsuario planUsuario = new PlanUsuario();
+            planUsuario.setIdPlan(document.getString("idPlan"));
+            planUsuario.setRun(document.getString("run"));
+            planUsuario.setNombrePlan(document.getString("nombrePlan"));
+            planUsuario.setNombreUsuario(document.getString("nombreUsuario"));
+            planUsuario.setApellidoUsuario(document.getString("apellidoUsuario"));
+            planUsuario.setFechaRegistroPlan(document.getTimestamp("fechaRegistroPlan").toSqlTimestamp());
+            planUsuario.setFechaInicio(document.getTimestamp("fechaInicio").toSqlTimestamp());
+            planUsuario.setFechaFin(document.getTimestamp("fechaFin").toSqlTimestamp());
+            planUsuario.setMonto(document.getLong("monto"));
+            planUsuario.setMetodoPago(document.getString("metodoPago"));
+            planUsuario.setDescuento(document.getLong("descuento"));
+            planesUsuarios.add(planUsuario);
         }
         logger.info("[PlanUsuarioServiceImpl] ::: Fin del método listPlanesUsuarios() ::: "+ planesUsuarios);
         return planesUsuarios;
