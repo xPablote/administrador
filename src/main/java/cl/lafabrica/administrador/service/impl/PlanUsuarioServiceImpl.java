@@ -1,7 +1,6 @@
 package cl.lafabrica.administrador.service.impl;
 
 import cl.lafabrica.administrador.model.PlanUsuario;
-import cl.lafabrica.administrador.model.Usuario;
 import cl.lafabrica.administrador.response.ResponseFirestore;
 import cl.lafabrica.administrador.service.PlanUsuarioService;
 import com.google.api.core.ApiFuture;
@@ -17,7 +16,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 

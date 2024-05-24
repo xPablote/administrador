@@ -3,7 +3,6 @@ package cl.lafabrica.administrador.service.impl;
 import cl.lafabrica.administrador.model.Colaborador;
 import cl.lafabrica.administrador.model.Estado;
 import cl.lafabrica.administrador.model.RolColaborador;
-import cl.lafabrica.administrador.model.Usuario;
 import cl.lafabrica.administrador.response.ResponseFirestore;
 import cl.lafabrica.administrador.service.ColaboradorService;
 import com.google.api.core.ApiFuture;
@@ -19,7 +18,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
