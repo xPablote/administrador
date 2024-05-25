@@ -46,7 +46,7 @@ public class UsuarioServiceImpl  implements UsuarioService {
         ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
         String run = documentReference.getId();
         respuesta.setRun(run);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
         String fechaCreacion = formatter.format(fecha);
         respuesta.setFecha(fechaCreacion);
@@ -77,6 +77,7 @@ public class UsuarioServiceImpl  implements UsuarioService {
             String estadoString = documentSnapshot.getString("estado");
             Estado estado = Estado.valueOf(estadoString);
             usuario.setEstado(estado);
+            usuario.setTienePlan(documentSnapshot.getBoolean("tienePlan"));
             return usuario;
         }
         logger.info("[UsuarioServiceImpl] ::: Fin del método getUsuario() ::: Usuario inexistente: "+run);
@@ -103,6 +104,7 @@ public class UsuarioServiceImpl  implements UsuarioService {
             String estadoString = document.getString("estado");
             Estado estado = Estado.valueOf(estadoString);
             usuario.setEstado(estado);
+            usuario.setTienePlan(document.getBoolean("tienePlan"));
             usuarios.add(usuario);
         }
         logger.info("[UsuarioServiceImpl] ::: Fin del método getUsuarios() ::: "+usuarios);
@@ -121,7 +123,7 @@ public class UsuarioServiceImpl  implements UsuarioService {
             String rut = documentReference.getId();
             ApiFuture<WriteResult> writeResultApiFuture = documentReference.set(usuario);
             respuesta.setRun(rut);
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
             Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
             String fechaCreacion = formatter.format(fecha);
             respuesta.setFecha(fechaCreacion);

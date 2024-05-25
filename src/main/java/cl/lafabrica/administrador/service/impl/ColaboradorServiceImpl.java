@@ -52,7 +52,7 @@ public class ColaboradorServiceImpl implements ColaboradorService {
         ApiFuture<WriteResult> writeResultApiFuture = documentReference.get().set(colaborador);
         String id = documentReference.get().getId();
         respuesta.setId(id);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
         String fechaCreacion = formatter.format(fecha);
         respuesta.setFecha(fechaCreacion);
@@ -116,7 +116,7 @@ public class ColaboradorServiceImpl implements ColaboradorService {
             firestore.collection(FIRESTORE_COLLECTION).document(document.getId()).set(updatedColaborador);
             logger.info("[ColaboradorServiceImpl] ::: Fin del método updateColaborador() ::: Colaborador modificado exitosamente ID: "+document.getId());
             respuesta.setId(document.getId());
-            String fechaCreacion = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            String fechaCreacion = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
             respuesta.setFecha(fechaCreacion);
             respuesta.setMensaje("Actualización Colaborador: "+ updatedColaborador.getUsername() +", Exitosa");
         }else{
@@ -152,13 +152,13 @@ public class ColaboradorServiceImpl implements ColaboradorService {
             logger.info("[ColaboradorServiceImpl] ::: Fin del método changeStateColaborador() ::: username: "+username+", nuevo Estado: "+nuevoEstado+", cambio de Estado exitoso: ");
             QueryDocumentSnapshot document = querySnapshot.getDocuments().get(0);
             dbFirestore.collection(FIRESTORE_COLLECTION).document(document.getId()).update("estado", nuevoEstado.name());
-            String fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+            String fecha = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
             respuesta.setFecha(fecha);
             respuesta.setId(document.getId());
             respuesta.setMensaje("Estado del colaborador actualizado correctamente.");
         } else {
             logger.info("[ColaboradorServiceImpl] ::: Fin del método changeStateColaborador() ::: username: "+username);
-            String fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+            String fecha = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
             respuesta.setFecha(fecha);
             respuesta.setId(username);
             respuesta.setMensaje("Colaborador "+username+" inexistente.");

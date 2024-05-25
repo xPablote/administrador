@@ -50,7 +50,7 @@ public class PlanUsuarioServiceImpl implements PlanUsuarioService {
         ApiFuture<WriteResult> writeResultApiFuture = documentReference.get().set(planUsuario);
         String id = documentReference.get().getId();
         respuesta.setId(id);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
         String fechaCreacion = formatter.format(fecha);
         respuesta.setFecha(fechaCreacion);
@@ -115,7 +115,7 @@ public class PlanUsuarioServiceImpl implements PlanUsuarioService {
             firestore.collection(FIRESTORE_COLLECTION).document(document.getId()).set(updatePlanUsuario);
             logger.info("[PlanUsuarioServiceImpl] ::: Fin del método updatePlanUsuario() ::: PlanUsuario modificado exitosamente ID: "+document.getId());
             respuesta.setId(document.getId());
-            String fechaCreacion = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            String fechaCreacion = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
             respuesta.setFecha(fechaCreacion);
             respuesta.setMensaje("Actualización PlanUsuario: "+ document.getId() +", Exitosa");
         }else{
@@ -136,6 +136,7 @@ public class PlanUsuarioServiceImpl implements PlanUsuarioService {
         planUsuario.setFechaInicio(documentSnapshot.getTimestamp("fechaInicio").toSqlTimestamp());
         planUsuario.setFechaFin(documentSnapshot.getTimestamp("fechaFin").toSqlTimestamp());
         planUsuario.setMonto(documentSnapshot.getLong("monto"));
+        planUsuario.setMensualidades(documentSnapshot.getLong("mensualidades"));
         planUsuario.setMetodoPago(documentSnapshot.getString("metodoPago"));
         planUsuario.setDescuento(documentSnapshot.getLong("descuento"));
         return planUsuario;
