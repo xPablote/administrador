@@ -53,7 +53,7 @@ public class PagosServiceImpl implements PagosService {
         ApiFuture<WriteResult> writeResultApiFuture = documentReference.get().set(pago);
         String id = documentReference.get().getId();
         respuesta.setId(id);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
         String fechaCreacion = formatter.format(fecha);
         respuesta.setFecha(fechaCreacion);
@@ -116,7 +116,7 @@ public class PagosServiceImpl implements PagosService {
             firestore.collection(FIRESTORE_COLLECTION).document(document.getId()).set(updatePago);
             logger.info("[PagosServiceImpl] ::: Fin del método updatePago() ::: Pago modificado exitosamente ID: "+document.getId());
             respuesta.setId(document.getId());
-            String fechaCreacion = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            String fechaCreacion = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
             respuesta.setFecha(fechaCreacion);
             respuesta.setMensaje("Actualización Pago: "+ document.getId() +", Exitosa");
         }else{

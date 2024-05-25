@@ -1,5 +1,6 @@
 package cl.lafabrica.administrador.controller;
 
+import cl.lafabrica.administrador.model.Estado;
 import cl.lafabrica.administrador.model.Plan;
 import cl.lafabrica.administrador.response.ResponseFirestore;
 import cl.lafabrica.administrador.service.PlanService;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -40,10 +43,11 @@ public class PlanController {
             @ApiResponse(responseCode = "200", description = "Obtiene un Plan correctamente"),
             @ApiResponse(responseCode = "404", description = "Plan inexistente")
     })
-    @GetMapping("/getPlan/{id}")
+    @GetMapping("/getPlan")
     public ResponseEntity<Plan> getPlan(
-            @PathVariable String id) throws Exception {
-        Plan resp = planService.getPlan(id);
+            @RequestParam String nombrePlan) throws Exception {
+        String cadenaDecodificada = URLDecoder.decode(nombrePlan, StandardCharsets.UTF_8.name());
+        Plan resp = planService.getPlan(cadenaDecodificada);
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
@@ -69,7 +73,16 @@ public class PlanController {
         ResponseFirestore resp = planService.updatePlan(plan);
         return new ResponseEntity<ResponseFirestore>(resp, HttpStatus.OK);
     }
-
-
-
+    @Operation(summary = "Modifica estado de un Plan")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Modificó estado de un Plan correctamente"),
+            @ApiResponse(responseCode = "404", description = "Modificación cambio de Plan sin exito")
+    })
+    @PutMapping("/changeStatePlan/{nombrePlan}/{estado}")
+    public ResponseEntity<ResponseFirestore> changeStatePlan(
+            @PathVariable String nombrePlan,
+            @PathVariable Estado estado) throws Exception {
+        ResponseFirestore resp = planService.changeStatePlan(nombrePlan,estado);
+        return new ResponseEntity<ResponseFirestore>(resp, HttpStatus.OK);
+    }
 }

@@ -25,6 +25,7 @@ public class PlanUsuario {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Timestamp fechaFin;
     private Long monto;
+    private Long mensualidades;
     private String metodoPago;
     private Long descuento;
 

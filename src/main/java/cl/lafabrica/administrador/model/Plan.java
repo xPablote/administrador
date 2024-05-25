@@ -1,5 +1,7 @@
 package cl.lafabrica.administrador.model;
 
+import com.google.cloud.firestore.annotation.DocumentId;
+import com.google.cloud.firestore.annotation.PropertyName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +15,7 @@ public class Plan {
     private String idPlan;
     private String nombrePlan;
     private Long valorPlan;
-    private Long mensualidades;
     private String descripcionPlan;
+    @PropertyName("estado")
+    private Estado estado;
 }
