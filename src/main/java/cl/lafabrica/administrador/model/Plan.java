@@ -13,5 +13,6 @@ public class Plan {
     private String idPlan;
     private String nombrePlan;
     private Long valorPlan;
+    private Long mensualidades;
     private String descripcionPlan;
 }
