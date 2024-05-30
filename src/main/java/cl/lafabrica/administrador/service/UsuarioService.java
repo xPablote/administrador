@@ -17,4 +17,5 @@ public interface UsuarioService {
     List<Usuario> listUsuarios() throws ExecutionException, InterruptedException;
     ResponseFirestoreUsuario updateUsuario(Usuario usuario) throws ExecutionException, InterruptedException;
     ResponseFirestoreUsuario changeStateUsuario(String run, Estado nuevoEstado) throws InterruptedException, ExecutionException;
+    ResponseFirestoreUsuario changeTienePlan(String run, Boolean tienePlan) throws ExecutionException, InterruptedException;
 }

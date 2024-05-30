@@ -167,4 +167,30 @@ public class UsuarioServiceImpl  implements UsuarioService {
         return  respuesta;
     }
 
+    @Override
+    public ResponseFirestoreUsuario changeTienePlan(String run, Boolean tienePlan) throws ExecutionException, InterruptedException {
+        logger.info("[UsuarioServiceImpl] ::: Iniciando el método changeTienePlan() ::: Usuario RUN: " + run + ", TienePlan: " + tienePlan);
+        firestore = FirestoreClient.getFirestore();
+        DocumentReference usuarioRef = firestore.collection("usuarios").document(run);
+        ApiFuture<DocumentSnapshot> future = usuarioRef.get();
+        DocumentSnapshot documento = future.get();
+        ResponseFirestoreUsuario respuesta = new ResponseFirestoreUsuario();
+        if (documento.exists()) {
+            Map<String, Object> usuarioData = documento.getData();
+            if (usuarioData != null)
+            usuarioData.put("tienePlan", tienePlan);
+            usuarioRef.set(usuarioData, SetOptions.merge()).get();
+            respuesta.setRun(run);
+            respuesta.setFecha(fechaActual());
+            respuesta.setMensaje("Usuario RUN: " + run + " cambio de tienePlan a: " + tienePlan);
+            logger.info("[UsuarioServiceImpl] ::: Fin del método changeTienePlan() ::: Usuario RUN: "+run+", cambio de tienePlan a: " + tienePlan +" exitoso: ");
+        } else {
+            logger.info("[UsuarioServiceImpl] ::: Fin del método changeTienePlan() ::: Usuario Inexistente RUN: "+run);
+            respuesta.setRun(run);
+            respuesta.setFecha(fechaActual());
+            respuesta.setMensaje("Usuario RUN: "+ run +", Inexistente");
+        }
+        return  respuesta;
+    }
+
 }
