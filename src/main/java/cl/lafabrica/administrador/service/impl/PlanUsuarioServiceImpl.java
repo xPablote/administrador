@@ -96,6 +96,7 @@ public class PlanUsuarioServiceImpl implements PlanUsuarioService {
             planUsuario.setMonto(document.getLong("monto"));
             planUsuario.setMetodoPago(document.getString("metodoPago"));
             planUsuario.setDescuento(document.getLong("descuento"));
+            planUsuario.setMensualidades(document.getLong("mensualidades"));
             planesUsuarios.add(planUsuario);
         }
         logger.info("[PlanUsuarioServiceImpl] ::: Fin del método listPlanesUsuarios() ::: "+ planesUsuarios);
