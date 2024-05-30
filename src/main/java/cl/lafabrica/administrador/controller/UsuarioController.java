@@ -84,4 +84,17 @@ public class UsuarioController {
         return new ResponseEntity<ResponseFirestoreUsuario>(resp, HttpStatus.OK);
     }
 
+    @Operation(summary = "Modifica TienePlan de un usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Modificó TienePlan de un usuario correctamente"),
+            @ApiResponse(responseCode = "404", description = "Modificación cambio de TienePlan sin exito")
+    })
+    @PutMapping("/changeTienePlan/{run}/{tienePlan}")
+    public ResponseEntity<ResponseFirestoreUsuario> changeTienePlan(
+            @PathVariable String run,
+            @PathVariable Boolean tienePlan) throws Exception {
+        ResponseFirestoreUsuario resp = usuarioService.changeTienePlan(run, tienePlan);
+        return new ResponseEntity<ResponseFirestoreUsuario>(resp, HttpStatus.OK);
+    }
+
 }
