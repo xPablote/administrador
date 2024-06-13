@@ -21,4 +21,5 @@ public class Pago {
     private Long monto;
     private String metodoPago;
     private Long descuento;
+    private Long mensualidades;
 }
