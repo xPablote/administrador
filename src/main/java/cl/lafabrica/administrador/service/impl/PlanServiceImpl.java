@@ -113,9 +113,9 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public ResponseFirestore updatePlan(Plan plan) throws ExecutionException, InterruptedException {
-        logger.info("[PlanServiceImpl] ::: Iniciando el método updatePlan() ::: "+ plan.getNombrePlan());
+        logger.info("[PlanServiceImpl] ::: Iniciando el método updatePlan() ::: "+ plan.getIdPlan());
         firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(plan.getNombrePlan());
+        DocumentReference documentReference  = firestore.collection(FIRESTORE_COLLECTION).document(plan.getIdPlan());
         ResponseFirestore respuesta = new ResponseFirestore();
         DocumentSnapshot documentSnapshot = documentReference.get().get();
         if (documentSnapshot.exists()){
@@ -127,11 +127,11 @@ public class PlanServiceImpl implements PlanService {
             Date fecha = writeResultApiFuture.get().getUpdateTime().toDate();
             String fechaCreacion = formatter.format(fecha);
             respuesta.setFecha(fechaCreacion);
-            respuesta.setMensaje("Actualización Plan: "+ plan.getNombrePlan() +", Exitosa");
+            respuesta.setMensaje("Actualización Plan: "+ plan.getIdPlan() +", Exitosa");
         }else{
-            logger.info("[PlanServiceImpl] ::: Fin del método updatePlan() ::: Plan Inexistente ID: "+ plan.getNombrePlan());
+            logger.info("[PlanServiceImpl] ::: Fin del método updatePlan() ::: Plan Inexistente ID: "+ plan.getIdPlan());
             respuesta.setFecha(fechaActual());
-            respuesta.setMensaje("Plan Id: "+ plan.getNombrePlan() +", Inexistente");
+            respuesta.setMensaje("Plan Id: "+ plan.getIdPlan() +", Inexistente");
         }
         return  respuesta;
     }

@@ -97,6 +97,7 @@ public class PagosServiceImpl implements PagosService {
             pago.setMonto(document.getLong("monto"));
             pago.setMetodoPago(document.getString("metodoPago"));
             pago.setDescuento(document.getLong("descuento"));
+            pago.setMensualidades(document.getLong("mensualidades"));
             pagos.add(pago);
         }
         logger.info("[PagosServiceImpl] ::: Fin del método listPagos() ::: "+ pagos);
@@ -137,6 +138,7 @@ public class PagosServiceImpl implements PagosService {
         pago.setMonto(documentSnapshot.getLong("monto"));
         pago.setMetodoPago(documentSnapshot.getString("metodoPago"));
         pago.setDescuento(documentSnapshot.getLong("descuento"));
+        pago.setMensualidades(documentSnapshot.getLong("mensualidades"));
         return pago;
     }
 

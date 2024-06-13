@@ -25,9 +25,7 @@ public class Usuario {
     private String maternoApellido;
     private String email;
     private Long fono;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Timestamp fechaNacimiento;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Timestamp fechaRegistro;
     @PropertyName("estado")
     private Estado estado;
