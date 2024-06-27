@@ -1,10 +1,8 @@
 package cl.lafabrica.administrador.service.impl;
 
 import cl.lafabrica.administrador.model.Pago;
-import cl.lafabrica.administrador.model.PlanUsuario;
 import cl.lafabrica.administrador.response.ResponseFirestore;
 import cl.lafabrica.administrador.service.PagosService;
-import cl.lafabrica.administrador.service.PlanUsuarioService;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
@@ -13,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
