@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum RolColaborador {
     STAFF("S", "STAFF"),
-    ADMIN("A", "ADMIN");
+    ADMIN("A", "ADMIN"),
+    CUSTOM("C", "CUSTOM");
 
     private String idRol;
     private String tipoRol;
