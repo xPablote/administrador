@@ -13,13 +13,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.util.List;
+
 import java.util.concurrent.ExecutionException;
 
 @Configuration
 public class SecurityConfig {
-    @Autowired
-    ColaboradorService colaboradorService;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,16 +33,35 @@ public class SecurityConfig {
     }
     @Bean
     InMemoryUserDetailsManager inMemoryUserDetailsManager() throws ExecutionException, InterruptedException {
-        List<Colaborador> colaboradorList = colaboradorService.listColaboradores();
         var admin = User.withUsername("admin")
                 .password("admin")
                 .authorities("ADMIN")
                 .build();
-        var staff = User.withUsername("staff")
-                .password("staff")
+        var rlinco = User.withUsername("r.linco")
+                .password("123")
                 .authorities("STAFF")
                 .build();
-        return new InMemoryUserDetailsManager(admin, staff);
+        var tsep = User.withUsername("t.sep")
+                .password("1234")
+                .authorities("STAFF")
+                .build();
+        var mavs = User.withUsername("mavs")
+                .password("123456")
+                .authorities("STAFF")
+                .build();
+        var jbor = User.withUsername("j.bor")
+                .password("1234")
+                .authorities("STAFF")
+                .build();
+        var klobos = User.withUsername("klobos")
+                .password("123")
+                .authorities("STAFF")
+                .build();
+        var custom = User.withUsername("custom")
+                .password("custom")
+                .authorities("CUSTOM")
+                .build();
+        return new InMemoryUserDetailsManager(admin, rlinco, tsep, mavs, jbor, klobos, custom);
     }
 
     @Bean
